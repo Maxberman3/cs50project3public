@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Tickets Bought!</title>
+  <style>
+  body {
+    background-color: lightgrey;
+  }
+  </style>
+</head>
+<body>
+  <h2> Reservation Made! </h2></br>
+  <p> Congragulations {{passengername}}! Reservations have been made for you on the cruise from {{cruiseinfo.origin}} to {{cruiseinfo.destination}}.
+    We're looking forward to seeing you then. Please arrive on time at {{cruiseinfo.origin}}. Before boarding the crew will holler out your name and if you are present
+    you should shout back "YUP THATS ME! {{passengername}}! THE BEST DAMN HILLBILLY ON THE BOAT!".  At which point we collect proper payment for the trip, which includes but
+    is not limited to: dollar bills, PBR, Kenny Chesney Records, belt buckles of a suitable size, and bj's from your sister.</p>
+  </br>
+  <a href="{% url 'index' %}"> Return to homepage </a>
+</body>
+</html>

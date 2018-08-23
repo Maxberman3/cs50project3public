@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Merch</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<style>
+.card-img-top {
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+}
+</style>
+</head>
+<body>
+  {% load static %}
+  <div class="container-fluid">
+    <h1 align="center" style="border:solid;background-color:lightgrey;margin:5px;padding:2px;padding-top:3px;"> Merch</h1>
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <img class="card-img-top" src="{% static "redneck1/smokey.jpg" %}">
+          <div class="card-body">
+            <h5 class="card-title">Burt Reynolds T</h5>
+            <p class="card-text"> Show everyone you would never forget our lord and savior, Smokey </p>
+            <a href="merch/smokeyt" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <img class="card-img-top" src="{% static "redneck1/swamplife.jpg" %}">
+          <div class="card-body">
+            <h5 class="card-title">Swamplife T</h5>
+            <p class="card-text">It's all about the Swamplife ya'll. They don't even know</p>
+            <a href="merch/swamplifet" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <img class="card-img-top" src="{% static "redneck1/fordrdahead.jpg" %}">
+          <div class="card-body">
+            <h5 class="card-title">Ford Explorer T</h5>
+            <p class="card-text"> Ford Pickups: You can go anywhere </p>
+            <a href="merch/fordt" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <img class="card-img-top" src="{% static "redneck1/pieceofship.jpg" %}">
+          <div class="card-body">
+            <h5 class="card-title">Piece of Ship T</h5>
+            <p class="card-text"> Piece of Ship Technology: Producing only the most cutting edge of the flotational spectrum </p>
+            <a href="merch/pieceofshipt" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <img class="card-img-top" src="{% static "redneck1/swmplke.jpg" %}">
+          <div class="card-body">
+            <h5 class="card-title">Dirginockany Swamplake T</h5>
+            <p class="card-text"> Cause there's no place like home sweet home. Except maybe Alabama</p>
+            <a href="merch/swamplaket" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+        <div class="col-4">
+          <div class="card">
+            <img class="card-img-top" src="{% static "redneck1/cart.jpg"  %}">
+            <div class="card-body">
+              <h5 class="card-title">Your Shopping Cart</h5>
+              <p class="card-text"></p>
+              <a href="merch/cart" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</body>
+</html>

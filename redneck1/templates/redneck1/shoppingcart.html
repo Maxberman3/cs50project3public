@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <title> {{username}}'s Shopping Cart </title>
+  </head>
+  <body>
+    <div class="container-fluid">
+    <h1> {{username}}'s Shopping Cart: </h1>
+    <ul>
+      {% for item in cart %}
+      <li id="{{item.id}}"><h4>{{item}}</h4><button class="btn btn-danger" value="{{item.id}}">Remove from Cart</button></li>
+      {% empty %}
+      <li> The Shopping Cart is Empty </li>
+      {% endfor %}
+    </ul>
+    <h4> Grand Total: $<span id="total">{{total}}</span></h4>
+    <a href="/merch" class="btn btn-primary">Continue Shopping</a>    <a href="" class="btn btn-primary">Checkout</a>
+  </div>
+  <script>
+  $.ajaxSetup({data: {
+    csrfmiddlewaretoken: '{{ csrf_token }}'
+  }});
+</script>
+  <script src="{% static "redneck1/cart.js" %}"></script>
+</body>
+</html>

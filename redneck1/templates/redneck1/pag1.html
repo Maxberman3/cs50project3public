@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<title>Redneck Cruises Incorporated</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'createaccount' %}">Create Account</a>
+          </li>
+          <li class="nav-item">
+            {% if isauth %}
+            <a class="nav-link active" href="{% url 'userlogout' %}"> Sign Out</a>
+            {% else %}
+            <a class="nav-link active" href="{% url 'loginview' %}">Log In</a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">>
+      <div class="jumbotron jumbotron-fluid">
+  <div class="container-fluid">
+    <h1 class="display-4">Welcome to Redneck Cruises Inc!</h1>
+    <p class="lead">Now offering unlimited PBR, catfish noodlin & Florida Georgia Line</p>
+    {% load static %}
+    <img src="{% static "redneck1/redneckparty.jpg" %}" height= 600px>
+    <p>See what we got to offer</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'ships' %}" role="button">Our Ships</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'crew' %}" role="button">The Crew</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'times' %}" role="button">Deparature/Arrival Times</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'reviews' %}" role="button"> Testimonials </a>
+    <a class="btn btn-primary btn-lg" href="{% url 'gettix' %}" role="button"> Get Tickets! </a>
+    <a class="btn btn-primary btn-lg" href="{% url 'merch' %}" role="button"> Merch </a>
+  </div>
+</div>
+</div>
+</div>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'redneck1/merchbase.html' %}
+{% load static %}
+{% block title %} Ford: Built for the Road Ahead T {% endblock %}
+{% block tname %} Ford: Built for the Road Ahead T Shirt {% endblock %}
+{% block color %} Green {% endblock %}
+{% block img %}<img src="{% static "redneck1/fordrdahead.jpg" %}" class="img-responsive center-block" height=600px></img>{% endblock %}
+{% block description %} We all know Ford for the F-150: the best landfaring vehicle in the world. What most people don't know is that the F-150 is also
+the best <i>seafaring</i> vehicle in the world. Truly built for the road ahead. {% endblock %}
+{% block options %}
+<option value="ford_S">S</option>
+<option value="ford_M">M</option>
+<option value="ford_L">L</option>
+{% endblock %}

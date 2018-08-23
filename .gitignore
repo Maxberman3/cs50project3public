@@ -1,0 +1,5 @@
+manage.py
+mysite/settings.py
+redneck1/migrations
+redneck1/__pycache__/*
+mysite/__pycache__/*

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Details for {{cruise.origin}} to {{cruise.destination}}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static "redneck1/tablestyle.css"  %}"></link>
+</head>
+<body>
+  <h3> Origin: {{cruise.origin}} </h3></br>
+  <h3> Destination: {{cruise.destination}} </h3></br>
+  <h3> Craft: {{cruise.craft}} </h3></br>
+  <h3> Captain: {{cruise.crew1}} </h3></br>
+  <h3> Crew: {{cruise.crew2}} / {{cruise.crew3}} </h3></br>
+  <h3> Passengers: </h3></br>
+  <table>
+    <tr>
+      <th> First Name </th>
+      <th> Last Name </th>
+    </tr>
+    {% for passenger in passengers %}
+    <tr>
+    <td> {{passenger.first_name}}</td>
+    <td> {{passenger.last_name}}</td>
+  </tr>
+  {% endfor %}
+</table>
+</body>
+</html>

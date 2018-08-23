@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Our Reviews!</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <style>
+  body{
+    background-color: lightgrey;
+  }
+  a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: inital;
+}
+  </style>
+</head>
+  <body>
+    <div class="container-fluid">
+    <a href= "{% url 'reviewform' %}", class="button">Submit a review</a></br>
+    <h2> Testimonials: </h2></br>
+    <ul>
+      {% for review in reviews %}
+      <li> {{review.username}} on {{review.submission_date}}: </br>
+        {{review.contents}}</li>
+        </ul>
+        {% empty %}
+        <h3>There are no reviews yet</h3>
+        {% endfor %}
+      </div>
+    </body>
+    </html>
