@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,reverse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from .models import Cruise,Review,Passenger,Product,ShoppingCartItem
+from .models import Cruise,Review,Passenger,Product,ShoppingCartItem,OrderItem
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Sum
@@ -199,16 +199,19 @@ def checkout(request):
         }
         return render(request,'redneck1/checkoutform.html',context)
     elif request.method=='POST':
-        token=request.POST['stripeToken']
-        full_name=request.POST['full_name']
-        address=request.POST['address']
-        city=request.POST['city']
-        state=request.POST['state']
-        zip=request.POST['zip']
-        cart=User.object.get(username=request.user).shoppingcart.all()
-        if not zip.isdigit():
+        try:
+            token=request.POST['stripeToken']
+            email=request.POST['stripeEmail']
+            full_name=request.POST['stripeShippingName']
+            address=request.POST['stripeShippingAddressLine1']
+            city=request.POST['stripeShippingAddressCity']
+            state=request.POST['stripeShippingAddressState']
+            country=request.POST['stripeShippingAddressCountry']
+            zip=request.POST['stripeShippingAddressZip']
+            cart=User.objects.get(username=request.user).shoppingcart.all()
+        except KeyError:
             address=reverse('checkout')
-            return render(request,'redneck1/checkoutform.html',{'problem':'Checkout Failed','message': 'You entered an invalid input in the zipcode field','address':address})
+            return render(request,'redneck1/error.html',{'problem':'Checkout Failed','message': 'The post request did not contain the correct information','address':address})
         try:
             charge=stripe.Charge.create(
             amount=stripetotal,
@@ -220,11 +223,10 @@ def checkout(request):
                 product=item.product
                 user=item.username
                 quantity=item.quantity
-                new_order=OrderItem(product=product,username=user,quantity=quantity,name=full_name,address=address,city=city,state=state,zipcode=zip,chargeid=charge.id)
+                new_order=OrderItem(product=product,username=user,quantity=quantity,name=full_name,address=address,city=city,state=state,country=country,zipcode=zip,chargeid=charge.id,email=email)
                 new_order.save()
                 item.delete()
-            alert("Your payment was accepted and your order will be shipped shortly!")
-            return redirect('index')
+            return render(request,'redneck1/checkoutsuccess.html')
         except stripe.error.CardError:
             address=reverse('checkout')
-            return render(request,'redneck1/checkoutform.html',{'problem':'Checkout Failed','message': 'Something have been wrong with your card payment','address':address})
+            return render(request,'redneck1/checkoutform.html',{'problem':'Checkout Failed','message': 'Something went wrong with your card payment','address':address})

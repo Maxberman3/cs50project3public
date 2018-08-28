@@ -15,46 +15,17 @@
         <h3>Your total is: {{total}}</h3>
         <form class="form-group" method="post" action="{% url 'checkout' %}">
           {% csrf_token %}
-        <div class="form-row">
-        <div class="col">
-        <label for='namefield'>Full Name:</label>
-        <input type="text" maxlength="700" name='full_name' class='form-control' id='namefield' required>
-      </div>
-        <div class="col">
-        <label for='addressfield'>Street Address:</label>
-        <input type="text" maxlength="700" name='address' class='form-control' id='addressfield' required>
-      </div>
-    </div>
-  </br>
-        <div class="form-row">
-          <div class="col">
-        <label for='cityfield'>City:</label>
-        <input type="text" maxlength="700" name='city' class='form-control' id='cityfield' required>
-      </div>
-        <div class="col">
-          <label for='statefield'>State:</label>
-          <input type="text" maxlength='14' name='state' class='form-control' id='statefield' required>
-      </div>
-    </div>
-  </br>
-      <div class="form-row">
-        <div class='col-6'>
-          <label for='countryfield'>Country:</label>
-          <input type="text" class='form-control' maxlength="74" name="country" id='countryfield' required>
-        </div>
-        <div class="col-1">
-        <label for='zipfield'>Postal Code:</label>
-        <input type='text' maxlength="5" name='zip' class='form-control' id='zipfield' required>
-      </div>
-      </div>
       </br>
         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
         data-key="{{stripe_key}}"
-        data-name="redneck_cruises_inc"
+        data-name="Red Neck Cruises Inc."
         data-zip-code="true"
         data-amount="{{stripetotal}}"
-        data-currency="usd">
+        data-currency="usd"
+        data-shipping-address="true"
+        data-billing-address="true">
         </script>
+        <a href='/merch' class="btn btn-light">Continue Shopping</a>
         </form>
       </div>
     </div>

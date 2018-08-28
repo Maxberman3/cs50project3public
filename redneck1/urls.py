@@ -27,5 +27,4 @@ path("merch/addtocart",views.addtocart,name='addtocart'),
 path("merch/cart",views.shoppingcart,name='cart'),
 path("merch/cartremove",views.cartremove,name='cartremove'),
 path("merch/checkout",views.checkout,name='checkout'),
-path("merch/chckout",views.checkout,name='checkouthandle'),
 ]
