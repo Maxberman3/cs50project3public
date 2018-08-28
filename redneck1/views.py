@@ -82,24 +82,31 @@ def reviews(request):
     }
     return render(request,'redneck1/reviews.html',context)
 def review_form(request):
+    if not request.user.is_authenticated:
+        address=reverse('loginview')
+        return render(request,'redneck1/error.html',{'problem':'Unable to submit review','message':'You must be logged in order to create a review','address':address})
     context={
     'cruises':Cruise.objects.all()
     }
     return render(request,'redneck1/reviewform.html',context)
 def reviewsubmit(request):
-    try:
-        cruise=Cruise.objects.get(pk=int(request.POST['cruise']))
-        contents=request.POST['reviewcontents']
-        print(request.user)
-        if len(contents)<11:
+    if request.method=="POST":
+        try:
+            cruise=Cruise.objects.get(pk=int(request.POST['cruise']))
+            contents=request.POST['reviewcontents']
+            print(request.user)
+            if len(contents)<11:
+                address=reverse('reviewform')
+                return render(request,'redneck1/error.html',{'problem':'Review not submitted','message':'The length of the review was too short','address':address})
+                review=Review(username=User.objects.get(username=request.user),cruise=cruise,contents=contents)
+                review.save()
+        except KeyError:
             address=reverse('reviewform')
-            return render(request,'redneck1/error.html',{'problem':'Review not submitted','message':'The length of the review was too short','address':address})
-        review=Review(username=User.objects.get(username=request.user),cruise=cruise,contents=contents)
-        review.save()
-    except KeyError:
+            return render(request,'redneck1/error.html',{'problem':'Review not submitted','message':'You left either the contents or the select field blank','address':address})
+        return redirect('reviews')
+    else:
         address=reverse('reviewform')
-        return render(request,'redneck1/error.html',{'problem':'Review not submitted','message':'You left either the contents or the select field blank','address':address})
-    return redirect('reviews')
+        return render(request,'redneck1/error.html',{'problem':'Review not submitted','message':'Something was wrong with the POST request','address':address})
 #next few methods deal w/ticketing, issuing new tickets, etc
 def gettix(request):
     context={
@@ -143,6 +150,9 @@ def fordt(request):
 
 #url to handle adding something to cart
 def addtocart(request):
+    if not request.user.is_authenticated:
+        address=reverse('loginview')
+        return render(request,'redneck1/error.html',{'problem':'Not added to Cart','message':'Must be logged in order to add items to the cart','address':address})
     try:
         name=request.POST['name']
         quantity=int(request.POST['quantity'])
@@ -160,6 +170,9 @@ def addtocart(request):
     return redirect('merch')
 #renders the shopping cart
 def shoppingcart(request):
+    if not request.user.is_authenticated:
+        address=reverse('loginview')
+        return render(request,'redneck1/error.html',{'problem':'Cannot Display Cart','message':'Please log yourself in first','address':address})
     name=request.user
     cartitems=User.objects.get(username=request.user).shoppingcart.all()
     total=cartitems.aggregate(total=Sum('price'))['total']
@@ -188,6 +201,9 @@ def cartremove(request):
         response=HttpResponse('request not a post')
         return reponse
 def checkout(request):
+    if not request.user.is_authenticated:
+        address=reverse('loginview')
+        return render(request,'redneck1/error.html',{'problem':'Checkout Unavailable','message':'Please login in order to user checkout','address':address})
     carttotal=User.objects.get(username=request.user).shoppingcart.all().aggregate(total=Sum('price'))['total']
     total='{:,.2f}'.format(carttotal)
     stripetotal=total.replace('.','')
