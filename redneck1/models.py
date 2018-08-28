@@ -49,3 +49,15 @@ class ShoppingCartItem(models.Model):
 
     def __str__(self):
         return "{} x {} for a total of ${:,.2f}".format(self.product,self.quantity,self.price)
+
+class OrderItem(models.Model):
+    username=models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_orders')
+    name=models.CharField(max_length=700)
+    address=models.CharField(max_length=700)
+    state=models.CharField(max_length=14)
+    country=models.CharField(max_length=74)
+    zipcode=models.CharField(max_length=5)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,related_name='orders')
+    quantity=models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(100)])
+    chargeid=models.CharField(max_length=234)
+    filled=models.BooleanField(default=False)

@@ -20,7 +20,7 @@
       {% endfor %}
     </ul>
     <h4> Grand Total: $<span id="total">{{total}}</span></h4>
-    <a href="/merch" class="btn btn-primary">Continue Shopping</a>    <a href="" class="btn btn-primary">Checkout</a>
+    <a href="/merch" class="btn btn-primary">Continue Shopping</a>    <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
   </div>
   <script>
   $.ajaxSetup({data: {

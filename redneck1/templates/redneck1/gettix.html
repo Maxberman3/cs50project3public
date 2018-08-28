@@ -15,9 +15,9 @@
           <form action="{% url 'ticketsubmit' %}" method="post">
             {% csrf_token %}
           First Name: </br>
-          <input type="text" name="first_name" placeholder="Billy-Ray"></br>
+          <input type="text" name="first_name" placeholder="Billy-Ray" required></br>
           Last Name: </br>
-          <input type="text" name="last_name" placeholder="Chestnut"></br>
+          <input type="text" name="last_name" placeholder="Chestnut" required></br>
           <select name="cruise">
             {% for cruise in cruises %}
             <option value="{{cruise.id}}"> {{cruise.origin}} to {{cruise.destination}}

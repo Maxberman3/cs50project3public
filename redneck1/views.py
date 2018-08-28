@@ -5,6 +5,10 @@ from .models import Cruise,Review,Passenger,Product,ShoppingCartItem
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Sum
+from django.conf import settings
+import stripe
+
+stripe.api_key=settings.STRIPE_SECRET_KEY
 # Create your views here.
 #renders main page
 def index(request):
@@ -107,17 +111,21 @@ def ticketsubmit(request):
         first_name=request.POST['first_name']
         last_name=request.POST['last_name']
         cruise=Cruise.objects.get(pk=int(request.POST['cruise']))
-        passenger=Passenger(first_name=first_name,last_name=last_name,cruise=cruise)
-        passenger.save()
-        context={
-        'passengername':first_name+" "+last_name,
-        'cruise':cruise
-
-        }
+        print(cruise.origin)
+        if not Passenger.objects.filter(first_name=first_name,last_name=last_name,cruise=cruise).exists():
+            passenger=Passenger(first_name=first_name,last_name=last_name,cruise=cruise)
+            passenger.save()
+            context={
+            'passengername':first_name+" "+last_name,
+            'cruise':cruise
+            }
+            return render(request,'redneck1/gottix.html',context)
+        else:
+            address=reverse('gettix')
+            return render(request,'redneck1/error.html',{'problem':'tickets not booked','message': 'That person is already a passenger on this cruise','address':address})
     except KeyError:
         address=reverse('gettix')
         return render(request,'redneck1/error.html',{'problem':'tickets not booked','message': 'one or more fields was not entered','address':address})
-    return render(request,'redneck1/gottix.html',context)
 
 #renders the merch page and detail pages for each T
 def merch(request):
@@ -166,6 +174,7 @@ def shoppingcart(request):
     'total':totalstr,
     }
     return render(request,'redneck1/shoppingcart.html',context)
+#handles the removal of items from cart
 def cartremove(request):
     if request.method == 'POST':
         item_id=int(request.POST['item_id'])
@@ -178,3 +187,44 @@ def cartremove(request):
     else:
         response=HttpResponse('request not a post')
         return reponse
+def checkout(request):
+    carttotal=User.objects.get(username=request.user).shoppingcart.all().aggregate(total=Sum('price'))['total']
+    total='{:,.2f}'.format(carttotal)
+    stripetotal=total.replace('.','')
+    if request.method=='GET':
+        context={
+        'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
+        'total':total,
+        'stripetotal':stripetotal,
+        }
+        return render(request,'redneck1/checkoutform.html',context)
+    elif request.method=='POST':
+        token=request.POST['stripeToken']
+        full_name=request.POST['full_name']
+        address=request.POST['address']
+        city=request.POST['city']
+        state=request.POST['state']
+        zip=request.POST['zip']
+        cart=User.object.get(username=request.user).shoppingcart.all()
+        if not zip.isdigit():
+            address=reverse('checkout')
+            return render(request,'redneck1/checkoutform.html',{'problem':'Checkout Failed','message': 'You entered an invalid input in the zipcode field','address':address})
+        try:
+            charge=stripe.Charge.create(
+            amount=stripetotal,
+            currency='usd',
+            description='A redneck cruises merch charge',
+            source=token,
+            )
+            for item in cart:
+                product=item.product
+                user=item.username
+                quantity=item.quantity
+                new_order=OrderItem(product=product,username=user,quantity=quantity,name=full_name,address=address,city=city,state=state,zipcode=zip,chargeid=charge.id)
+                new_order.save()
+                item.delete()
+            alert("Your payment was accepted and your order will be shipped shortly!")
+            return redirect('index')
+        except stripe.error.CardError:
+            address=reverse('checkout')
+            return render(request,'redneck1/checkoutform.html',{'problem':'Checkout Failed','message': 'Something have been wrong with your card payment','address':address})
